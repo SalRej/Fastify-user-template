@@ -65,9 +65,15 @@ export const loginUserSchema = {
       200: {
         type: 'object',
         properties: {
-          name: { type: 'string' },
-          email: { type: 'string' },
-          id: { type: 'string' }
+          user: {
+            type: 'object',
+            properties: {
+              name: { type: 'string' },
+              email: { type: 'string' },
+              id: { type: 'string' }
+            }
+          },
+          token: { type: 'string' }
         }
       }
     }

@@ -82,7 +82,11 @@ export const loginUserHandler = async (
     const result = await bcrypt.compare(password, user.password)
 
     if (result) {
-      return await res.code(200).send(user)
+      const token = jwt.sign(email, process.env.JWT_SECRET ?? '')
+      return await res.code(200).send({
+        user,
+        token
+      })
     } else {
       return await res.code(409).send('Wrong passowrd')
     }
