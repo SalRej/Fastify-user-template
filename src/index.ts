@@ -4,16 +4,10 @@ import fastifyUi from '@fastify/swagger-ui'
 import fastify from 'fastify'
 import { userPrivateRoutes, userPublicRoutes } from './routes/user'
 import cors from '@fastify/cors'
-import sequelize from './config/_db'
 
-sequelize
-  .authenticate()
-  .then(() => {
-    startServer() // If the connection is successful, start the server
-  })
-  .catch((e) => {
-    console.error('Unable to connect to the database: \n', e)
-  })
+import { PrismaClient } from '@prisma/client'
+
+const prisma = new PrismaClient()
 
 const startServer = (): void => {
   const server = fastify()
@@ -48,3 +42,17 @@ const startServer = (): void => {
     }
   })
 }
+
+async function main (): Promise<void> {
+  startServer()
+}
+
+main()
+  .then(async () => {
+    await prisma.$disconnect()
+  })
+  .catch(async (e) => {
+    console.error(e)
+    await prisma.$disconnect()
+    process.exit(1)
+  })

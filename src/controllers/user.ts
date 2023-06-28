@@ -1,17 +1,18 @@
 import { type FastifyRequest, type FastifyReply } from 'fastify'
-import User from '../models/user'
-import { v4 as uuidv4 } from 'uuid'
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
 import type IUser from '../interfaces/user'
 import { type ITokenHeader } from '../interfaces/user'
+import { PrismaClient } from '@prisma/client'
+const prisma = new PrismaClient()
 
 export const createUserHandler = async (
   req: FastifyRequest<{ Body: IUser }>,
   res: FastifyReply
 ): Promise<void> => {
   const { name, email, password, confirmPassword } = req.body
-  const doesUserExist = await User.findOne({
+
+  const doesUserExist = await prisma.user.findUnique({
     where: {
       email
     }
@@ -28,11 +29,12 @@ export const createUserHandler = async (
   try {
     const hashedPassword = await bcrypt.hash(password, 10)
 
-    const newUser = await User.create({
-      id: uuidv4(),
-      name,
-      email,
-      password: hashedPassword
+    const newUser = await prisma.user.create({
+      data: {
+        name,
+        email,
+        password: hashedPassword
+      }
     })
 
     const token = jwt.sign(email, process.env.JWT_SECRET ?? '')
@@ -53,7 +55,7 @@ export const getUserHandler = async (
   res: FastifyReply
 ): Promise<void> => {
   const { email } = req.headers
-  const user = await User.findOne({
+  const user = await prisma.user.findUnique({
     where: {
       email
     }
@@ -72,7 +74,7 @@ export const loginUserHandler = async (
 ): Promise<void> => {
   const { email, password } = req.body
 
-  const user = await User.findOne({
+  const user = await prisma.user.findUnique({
     where: {
       email
     }
