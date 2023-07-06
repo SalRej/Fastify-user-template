@@ -1,3 +1,18 @@
+export const UserSchema = {
+  type: 'object',
+  properties: {
+    name: { type: 'string' },
+    email: { type: 'string' },
+    id: { type: 'string' }
+  }
+}
+
+export const AuthHeaderSchema = {
+  type: 'object',
+  properties: {
+    authorization: { type: 'string' }
+  }
+}
 
 export const createUserSchema = {
   schema: {
@@ -15,14 +30,7 @@ export const createUserSchema = {
       201: {
         type: 'object',
         properties: {
-          user: {
-            type: 'object',
-            properties: {
-              name: { type: 'string' },
-              email: { type: 'string' },
-              id: { type: 'string' }
-            }
-          },
+          user: UserSchema,
           token: { type: 'string' }
         }
       }
@@ -32,21 +40,9 @@ export const createUserSchema = {
 
 export const getUserSchema = {
   schema: {
-    headers: {
-      type: 'object',
-      properties: {
-        authorization: { type: 'string' }
-      }
-    },
+    headers: AuthHeaderSchema,
     response: {
-      200: {
-        type: 'object',
-        properties: {
-          name: { type: 'string' },
-          email: { type: 'string' },
-          id: { type: 'string' }
-        }
-      }
+      200: UserSchema
     }
   }
 }
@@ -65,14 +61,7 @@ export const loginUserSchema = {
       200: {
         type: 'object',
         properties: {
-          user: {
-            type: 'object',
-            properties: {
-              name: { type: 'string' },
-              email: { type: 'string' },
-              id: { type: 'string' }
-            }
-          },
+          user: UserSchema,
           token: { type: 'string' }
         }
       }
