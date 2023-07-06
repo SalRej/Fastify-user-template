@@ -11,4 +11,5 @@ export default IUser
 export interface ITokenHeader {
   authorization: string
   email?: string
+  id?: string
 }

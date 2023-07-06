@@ -37,7 +37,12 @@ export const createUserHandler = async (
       }
     })
 
-    const token = jwt.sign(email, process.env.JWT_SECRET ?? '')
+    const signiture = {
+      email,
+      id: newUser.id
+    }
+
+    const token = jwt.sign(signiture, process.env.JWT_SECRET as string)
 
     const payload = {
       user: newUser,
