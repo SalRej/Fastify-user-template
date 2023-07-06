@@ -3,8 +3,7 @@ import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
 import type IUser from '../interfaces/user'
 import { type ITokenHeader } from '../interfaces/user'
-import { PrismaClient } from '@prisma/client'
-const prisma = new PrismaClient()
+import prisma from '../config/prisma'
 
 export const createUserHandler = async (
   req: FastifyRequest<{ Body: IUser }>,
