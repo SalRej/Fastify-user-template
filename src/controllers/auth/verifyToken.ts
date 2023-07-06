@@ -18,6 +18,7 @@ const verifyToken = async (
       return res.code(409).send('Tokem mismatch')
     }
 
+    console.log('decoded - ', decoded)
     if (decoded) {
       const decodedObject = decoded as { email: string, id: string }
       req.headers.email = decodedObject.email

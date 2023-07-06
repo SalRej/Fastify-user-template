@@ -88,7 +88,11 @@ export const loginUserHandler = async (
     const result = await bcrypt.compare(password, user.password)
 
     if (result) {
-      const token = jwt.sign(email, process.env.JWT_SECRET ?? '')
+      const signiture = {
+        email,
+        id: user.id
+      }
+      const token = jwt.sign(signiture, process.env.JWT_SECRET ?? '')
       return await res.code(200).send({
         user,
         token
