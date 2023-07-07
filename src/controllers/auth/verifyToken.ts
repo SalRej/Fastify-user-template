@@ -15,10 +15,9 @@ const verifyToken = async (
 
   jwt.verify(token, process.env.JWT_SECRET ?? '', (error, decoded): any => {
     if (error != null) {
-      return res.code(409).send('Tokem mismatch')
+      return res.code(401).send('Tokem mismatch')
     }
 
-    console.log('decoded - ', decoded)
     if (decoded) {
       const decodedObject = decoded as { email: string, id: string }
       req.headers.email = decodedObject.email
