@@ -18,11 +18,11 @@ export const createUserHandler = async (
   })
 
   if (confirmPassword !== password) {
-    return await res.code(409).send('Passwords do not match')
+    return await res.code(409).send({ message: 'Passwords do not match' })
   }
 
   if (doesUserExist) {
-    return await res.code(409).send('Such a user already exists')
+    return await res.code(409).send({ message: 'Such a user already exists' })
   }
 
   try {
@@ -68,7 +68,7 @@ export const getUserHandler = async (
   if (user) {
     return await res.code(200).send(user)
   } else {
-    return await res.code(400).send('Could not retrieve the user')
+    return await res.code(400).send({ message: 'Could not retrieve the user' })
   }
 }
 
@@ -98,9 +98,9 @@ export const loginUserHandler = async (
         token
       })
     } else {
-      return await res.code(409).send('Wrong passowrd')
+      return await res.code(409).send({ message: 'Wrong passowrd' })
     }
   }
 
-  return await res.code(400).send('There is no such email')
+  return await res.code(400).send({ message: 'There is no such email' })
 }
